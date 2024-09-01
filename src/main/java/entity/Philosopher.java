@@ -63,6 +63,7 @@ public class Philosopher extends Thread {
             if(!rightFork.isOccupationStatus()) {
                 synchronized (rightFork) {
                     takeRightFork();
+                    cdlPhilosopher.countDown();
                 }
             } else {
                 leftFork.setOccupationStatus(false);
@@ -108,7 +109,6 @@ public class Philosopher extends Thread {
                     && this.hungryStatus) {
                 eat();
                 this.test = false;
-                cdlPhilosopher.countDown();
             } else {
                 meditate();
             }
