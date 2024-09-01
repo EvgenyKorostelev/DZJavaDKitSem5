@@ -59,6 +59,12 @@ public class Philosopher extends Thread {
 
     public void eat() {
         synchronized (leftFork) {
+            try {
+                System.out.println("->Небольшая задержка после 1-ого synchro<-");
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             takeLeftFork();
             if(!rightFork.isOccupationStatus()) {
                 synchronized (rightFork) {

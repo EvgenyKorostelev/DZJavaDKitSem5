@@ -47,7 +47,7 @@ public class Table extends Thread {
         for (Philosopher philosopher : philosophers) {
             philosopher.start();
         }
-//        какие потоки работают кроме сервисных
+//        !сервисные потоки
 //        for (Thread thread : Thread.getAllStackTraces().keySet()) {
 //            if (!thread.isDaemon()) {
 //                System.out.println(thread);
