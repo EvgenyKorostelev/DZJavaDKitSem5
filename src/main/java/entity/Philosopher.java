@@ -10,8 +10,19 @@ public class Philosopher extends Thread {
     private volatile Fork rightFork;
     private final CountDownLatch cdlPhilosopher;
     private CountDownLatch count;
+    //test ->
+    private boolean test = false;
+    private Table table;
 
+    public void setTable(Table table) {
+        this.table = table;
+    }
 
+    public boolean isTest() {
+        return test;
+    }
+
+    // <-
     public Philosopher(String name, CountDownLatch count) {
         this.name = name;
         this.cdlPhilosopher = new CountDownLatch(3);
@@ -47,12 +58,28 @@ public class Philosopher extends Thread {
     }
 
     public void eat() {
-        takeLeftFork();
-        takeRightFork();
+        synchronized (leftFork) {
+            takeLeftFork();
+            if(!rightFork.isOccupationStatus()) {
+                synchronized (rightFork) {
+                    takeRightFork();
+                }
+            } else {
+                leftFork.setOccupationStatus(false);
+                meditate();
+                return;
+            }
+        }
+//test ->
+        this.test = true;
+        if (table.getPhilosophers().getFirst().isTest() && table.getPhilosophers().getLast().isTest()) {
+            System.out.println("ERROR ОБА ЖРУТ !!!");
+        }
+// <-
         System.out.println(this.name +
                 " ест спагетти и приговаривает: Мамма Mia!");
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -65,7 +92,7 @@ public class Philosopher extends Thread {
         System.out.println(this.name +
                 " задумался о Великом . . .");
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -75,10 +102,12 @@ public class Philosopher extends Thread {
     @Override
     public void run() {
         while (cdlPhilosopher.getCount() > 0) {
+            //можно сделать что берет вилки по одной
             if (!leftFork.isOccupationStatus()
                     && !rightFork.isOccupationStatus()
                     && this.hungryStatus) {
                 eat();
+                this.test = false;
                 cdlPhilosopher.countDown();
             } else {
                 meditate();
@@ -86,8 +115,6 @@ public class Philosopher extends Thread {
             if (cdlPhilosopher.getCount() == 0) {
                 System.out.println(this.name + " НАЕЛСЯ");
                 count.countDown();
-                count.getCount();
-
             }
         }
     }

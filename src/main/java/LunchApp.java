@@ -7,23 +7,26 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class LunchApp {
-    static final CountDownLatch COUNT = new CountDownLatch(5);
+    static final CountDownLatch COUNT = new CountDownLatch(2);
     public static void main(String[] args) {
         List<Philosopher> philosophers = new ArrayList<>(List.of(
                 new Philosopher("Платон", COUNT),
-                new Philosopher("Сократ", COUNT),
-                new Philosopher("Ницше", COUNT),
-                new Philosopher("Марк Аврелий", COUNT),
+//                new Philosopher("Сократ", COUNT),
+//                new Philosopher("Ницше", COUNT),
+//                new Philosopher("Марк Аврелий", COUNT),
                 new Philosopher("Аристотель", COUNT))
         );
         List<Fork> forks = new ArrayList<>(List.of(
                 new Fork(),
-                new Fork(),
-                new Fork(),
-                new Fork(),
+//                new Fork(),
+//                new Fork(),
+//                new Fork(),
                 new Fork()
         ));
         Table table = new Table(philosophers, forks);
+        for (Philosopher philosopher : philosophers) {
+            philosopher.setTable(table);
+        }
         table.startLunch();
     }
 }

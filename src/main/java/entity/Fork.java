@@ -1,6 +1,6 @@
 package entity;
 
-public  class Fork {
+public class Fork {
 
     private boolean occupationStatus;
 

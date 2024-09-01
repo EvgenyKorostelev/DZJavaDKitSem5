@@ -7,6 +7,9 @@ public class Table extends Thread {
     private List<Philosopher> philosophers;
     private List<Fork> forks;
 
+    public List<Philosopher> getPhilosophers() {
+        return philosophers;
+    }
 
     public Table(List<Philosopher> philosophers, List<Fork> forks) {
         this.philosophers = philosophers;
@@ -44,11 +47,12 @@ public class Table extends Thread {
         for (Philosopher philosopher : philosophers) {
             philosopher.start();
         }
-        for (Thread thread : Thread.getAllStackTraces().keySet()) {
-            if (!thread.isDaemon()) {
-                System.out.println(thread);
-            }
-        }
+//        какие потоки работают кроме сервисных
+//        for (Thread thread : Thread.getAllStackTraces().keySet()) {
+//            if (!thread.isDaemon()) {
+//                System.out.println(thread);
+//            }
+//        }
         System.out.println();
         while (true){
             if(philosophers.getFirst().getCount().getCount() == 0){
